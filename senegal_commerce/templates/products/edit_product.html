@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient bg-warning text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Modifier le produit</h5>
+                    <a href="{% url 'product_list' %}" class="btn btn-sm btn-light">
+                        <i class="bi bi-arrow-left"></i> Retour
+                    </a>
+                </div>
+                <div class="card-body bg-light">
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+
+                        {% if product.image %}
+                        <div class="mb-4 text-center">
+                            <label class="form-label fw-semibold">Image actuelle :</label><br>
+                            <img src="{{ product.image.url }}" class="img-thumbnail rounded shadow-sm" style="max-height: 200px;">
+                        </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle me-2"></i>Enregistrer les modifications
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

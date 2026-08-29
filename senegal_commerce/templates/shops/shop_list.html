@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Boutiques disponibles</h1>
+    <div class="row">
+        {% for shop in shops %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if shop.logo %}
+                    <img src="{{ shop.logo.url }}" class="card-img-top" alt="Logo de {{ shop.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title d-flex align-items-center justify-content-between">
+                        {{ shop.name }}
+                        {% if shop.has_pro_badge %}
+                            <span class="badge bg-warning text-dark ms-2" style="font-size: 0.75rem;" title="Vendeur Professionnel">
+                                <i class="fas fa-crown me-1"></i>Pro
+                            </span>
+                        {% endif %}
+                    </h5>
+                    <p class="card-text">{{ shop.description|truncatewords:20 }}</p>
+                    <p><strong>Adresse :</strong> {{ shop.address }}, {{ shop.city }}</p>
+                    <p><strong>Téléphone :</strong> {{ shop.phone }}</p>
+                    {% if shop.email %}
+                        <p><strong>Email :</strong> {{ shop.email }}</p>
+                    {% endif %}
+                    <a href="{{ shop.get_absolute_url }}" class="btn btn-outline-primary">Voir la boutique</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Aucune boutique disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

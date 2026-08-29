@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Accueil - Sénégal Commerce{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title">Bienvenue sur Sénégal Commerce</h1>
+                <p class="hero-subtitle">
+                    La première plateforme e-commerce 100% sénégalaise. 
+                    Achetez local, vendez local, soutenez notre économie !
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'product_list' %}" class="btn btn-senegal-primary btn-lg">
+                        <i class="fas fa-shopping-bag me-2"></i>Faire du Shopping
+                    </a>
+                    <a href="{% url 'signup' %}" class="btn btn-senegal-secondary btn-lg">
+                        <i class="fas fa-store me-2"></i>Créer ma Boutique
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-store-alt" style="font-size: 15rem; color: rgba(44, 62, 80, 0.1);"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="stats-card text-center">
+                    <div class="stats-number">500+</div>
+                    <div class="stats-label">Produits</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card text-center">
+                    <div class="stats-number">100+</div>
+                    <div class="stats-label">Boutiques</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card text-center">
+                    <div class="stats-number">1000+</div>
+                    <div class="stats-label">Clients</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card text-center">
+                    <div class="stats-number">14</div>
+                    <div class="stats-label">Régions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Produits Vedettes</h2>
+            <p class="text-muted">Découvrez les meilleurs produits de nos vendeurs</p>
+        </div>
+        
+        <div class="row">
+            {% for product in featured_products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card product-card">
+                    <img src="{{ product.image.url }}" class="product-image" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ product.name }}</h6>
+                        <p class="card-text text-muted small">{{ product.shop.name }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="product-price">{{ product.price|floatformat:0 }} <span class="currency">FCFA</span></span>
+                            <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm btn-senegal-primary">
+                                Voir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'product_list' %}" class="btn btn-senegal-primary btn-lg">
+                Voir tous les produits <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- How it works -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Comment ça marche ?</h2>
+            <p class="text-muted">En quelques clics, rejoignez la communauté</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <div class="card card-senegal h-100">
+                    <div class="card-body">
+                        <i class="fas fa-user-plus fa-3x text-warning mb-3"></i>
+                        <h5>1. Inscrivez-vous</h5>
+                        <p class="text-muted">Créez votre compte gratuitement en choisissant votre profil : acheteur ou vendeur</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="card card-senegal h-100">
+                    <div class="card-body">
+                        <i class="fas fa-store fa-3x text-warning mb-3"></i>
+                        <h5>2. Créez votre boutique</h5>
+                        <p class="text-muted">Vendeurs : configurez votre boutique et ajoutez vos produits en quelques minutes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="card card-senegal h-100">
+                    <div class="card-body">
+                        <i class="fas fa-shopping-cart fa-3x text-warning mb-3"></i>
+                        <h5>3. Achetez et vendez</h5>
+                        <p class="text-muted">Commencez à vendre vos produits ou découvrez les merveilles du Sénégal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

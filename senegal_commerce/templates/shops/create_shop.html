@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Créer une nouvelle boutique</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+      <button type="submit" class="btn btn-primary mt-3">Créer la boutique</button>
+    </form>
+</div>
+{% endblock %}

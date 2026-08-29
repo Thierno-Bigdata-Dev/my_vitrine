@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Inscription - Sénégal Commerce{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card card-senegal">
+                <div class="card-header card-header-senegal text-center">
+                    <h3><i class="fas fa-user-plus me-2"></i>Créer un compte</h3>
+                    <p class="mb-0">Rejoignez la communauté Sénégal Commerce</p>
+                </div>
+                <div class="card-body">
+                    {% crispy form %}
+                    
+                    <div class="text-center mt-3">
+                        <p>Déjà un compte ? 
+                            <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Se connecter ici</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

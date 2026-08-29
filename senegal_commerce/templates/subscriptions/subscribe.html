@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}S'abonner au plan {{ plan.name }} - Sénégal Commerce{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden; background: #ffffff;">
+                
+                <!-- En-tête -->
+                <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, var(--senegal-green) 0%, #157347 100%);">
+                    <h3 class="fw-bold mb-1">Abonnement Sénégal Commerce</h3>
+                    <p class="mb-0 text-white-50">Sécurisé par Mobile Money</p>
+                </div>
+
+                <div class="card-body p-4">
+                    
+                    <!-- Détails de la formule -->
+                    <div class="bg-light p-3 rounded-3 mb-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark">Formule {{ plan.name }}</h5>
+                            <small class="text-muted">Abonnement mensuel ({{ plan.duration_days }} jours)</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="fs-4 fw-bold text-success">{{ plan.price|floatformat:0 }} FCFA</span>
+                        </div>
+                    </div>
+
+                    <!-- Instructions de simulation -->
+                    <div class="alert alert-info border-0 shadow-sm mb-4" style="border-radius: 12px; font-size: 0.9rem;">
+                        <h6 class="fw-bold text-info"><i class="fas fa-info-circle me-2"></i>Simulation de Paiement</h6>
+                        Pour simuler le paiement avec <strong>Orange Money</strong> ou <strong>Wave</strong> :
+                        <ol class="mb-0 mt-2 ps-3">
+                            <li>Choisissez votre opérateur ci-dessous.</li>
+                            <li>Saisissez un numéro de téléphone valide.</li>
+                            <li>Entrez un identifiant de transaction fictif (ex: <code>OM_123456</code> ou <code>W_987654</code>).</li>
+                            <li>Cliquez sur <strong>Confirmer l'abonnement</strong>.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Formulaire de paiement -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <!-- Choix de l'opérateur (simulé visuellement) -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">Choisissez votre opérateur de paiement :</label>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <input type="radio" class="btn-check" name="payment_method" id="pay_om" value="orange_money" checked>
+                                    <label class="btn btn-outline-warning w-100 p-3 d-flex flex-column align-items-center" for="pay_om" style="border-radius: 12px; transition: all 0.2s;">
+                                        <i class="fas fa-mobile-alt mb-2 text-warning" style="font-size: 1.8rem;"></i>
+                                        <span class="fw-bold">Orange Money</span>
+                                    </label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="radio" class="btn-check" name="payment_method" id="pay_wave" value="wave">
+                                    <label class="btn btn-outline-info w-100 p-3 d-flex flex-column align-items-center" for="pay_wave" style="border-radius: 12px; transition: all 0.2s;">
+                                        <i class="fas fa-wallet mb-2 text-info" style="font-size: 1.8rem;"></i>
+                                        <span class="fw-bold">Wave</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Numéro de téléphone -->
+                        <div class="mb-3">
+                            <label for="id_phone_number" class="form-label fw-bold text-dark">Numéro Mobile Money (Sénégal) :</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted fw-bold">+221</span>
+                                <input type="text" name="phone_number" id="id_phone_number" class="form-control form-control-lg" required placeholder="77 123 45 67" style="border-radius: 0 8px 8px 0;">
+                            </div>
+                        </div>
+
+                        <!-- ID de transaction -->
+                        <div class="mb-4">
+                            <label for="id_transaction_id" class="form-label fw-bold text-dark">ID de Transaction :</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="fas fa-receipt"></i></span>
+                                <input type="text" name="transaction_id" id="id_transaction_id" class="form-control form-control-lg" required placeholder="Saisissez la référence du transfert" style="border-radius: 0 8px 8px 0;">
+                            </div>
+                        </div>
+
+                        <!-- Bouton d'action -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg py-3 fw-bold" style="border-radius: 12px;">
+                                <i class="fas fa-lock me-2"></i>Confirmer le paiement de {{ plan.price|floatformat:0 }} FCFA
+                            </button>
+                            <a href="{% url 'plan_list' %}" class="btn btn-link text-muted">Retour aux plans</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-check:checked + .btn-outline-warning {
+        background-color: #ffc107 !important;
+        color: #000 !important;
+        border-color: #ffc107 !important;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    }
+    .btn-check:checked + .btn-outline-info {
+        background-color: #0dcaf0 !important;
+        color: #000 !important;
+        border-color: #0dcaf0 !important;
+        box-shadow: 0 4px 12px rgba(13, 202, 240, 0.4);
+    }
+</style>
+{% endblock %}

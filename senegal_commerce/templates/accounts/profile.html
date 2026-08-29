@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Mon Profil - Sénégal Commerce{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card card-senegal">
+                <div class="card-header card-header-senegal">
+                    <h3><i class="fas fa-user me-2"></i>Mon Profil</h3>
+                </div>
+                <div class="card-body">
+                    {% if form %}
+                        {% crispy form %}
+                    {% else %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Informations personnelles</h5>
+                                <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+                                <p><strong>Email:</strong> {{ user.email }}</p>
+                                <p><strong>Prénom:</strong> {{ user.first_name|default:"Non renseigné" }}</p>
+                                <p><strong>Nom:</strong> {{ user.last_name|default:"Non renseigné" }}</p>
+                                <p><strong>Type de compte:</strong> 
+                                    {% if user.user_type == 'vendor' %}
+                                        <span class="badge bg-warning">Vendeur</span>
+                                    {% else %}
+                                        <span class="badge bg-success">Client</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Contact</h5>
+                                <p><strong>Téléphone:</strong> {{ user.phone|default:"Non renseigné" }}</p>
+                                <p><strong>Adresse:</strong> {{ user.address|default:"Non renseignée" }}</p>
+                                <p><strong>Date d'inscription:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="#" class="btn btn-senegal-primary">
+                                <i class="fas fa-edit me-2"></i>Modifier mon profil
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

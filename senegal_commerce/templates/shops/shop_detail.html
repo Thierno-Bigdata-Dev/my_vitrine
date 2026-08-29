@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12 text-center mb-4">
+            <h1>
+                {{ shop.name }}
+                {% if shop.has_pro_badge %}
+                    <span class="badge bg-warning text-dark align-middle ms-2" style="font-size: 1rem;" title="Vendeur Professionnel">
+                        <i class="fas fa-crown me-1"></i>Pro
+                    </span>
+                {% endif %}
+            </h1>
+            {% if shop.banner %}
+                <img src="{{ shop.banner.url }}" class="img-fluid mb-3" alt="Bannière de {{ shop.name }}">
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            {% if shop.logo %}
+                <img src="{{ shop.logo.url }}" class="img-thumbnail mb-3" alt="Logo de {{ shop.name }}">
+            {% endif %}
+            <p><strong>Propriétaire :</strong> {{ shop.owner.get_full_name }}</p>
+            <p><strong>Ville :</strong> {{ shop.city }}</p>
+            <p><strong>Adresse :</strong> {{ shop.address }}</p>
+            <p><strong>Téléphone :</strong> {{ shop.phone }}</p>
+            {% if shop.email %}
+                <p><strong>Email :</strong> {{ shop.email }}</p>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h4>Description</h4>
+            <p>{{ shop.description }}</p>
+
+            <hr>
+            <h4>Produits disponibles</h4>
+
+            {% if user == shop.owner %}
+                <a href="{% url 'create_product' shop.id %}" class="btn btn-success mb-3">
+                    <i class="fas fa-plus-circle me-2"></i>Ajouter un produit
+                </a>
+            {% endif %}
+
+            <div class="row">
+                {% for product in shop.product_set.all %}
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title d-flex align-items-center justify-content-between">
+                                {{ product.name }}
+                                {% if product.has_pro_badge %}
+                                    <span class="badge bg-warning text-dark ms-2" style="font-size: 0.75rem;" title="Vendeur Professionnel">
+                                        <i class="fas fa-crown me-1"></i>Pro
+                                    </span>
+                                {% endif %}
+                            </h5>
+                            <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                            <p><strong>Prix :</strong> {{ product.price }} FCFA</p>
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-sm btn-primary">Voir le produit</a>
+                             {% if user == product.shop.owner %}
+                            <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-warning me-2">Modifier</a>
+                            <form action="{% url 'delete_product' product.id %}" method="post" style="display:inline;">
+                             {% csrf_token %}
+                           <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                            </form>
+                             {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Aucun produit pour cette boutique.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

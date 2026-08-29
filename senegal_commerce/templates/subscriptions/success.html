@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Abonnement activé - Sénégal Commerce{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 text-center">
+            <div class="card border-0 shadow-lg p-5" style="border-radius: 20px; background: #ffffff;">
+                <div class="mb-4">
+                    <span class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle" style="width: 80px; height: 80px; font-size: 2.5rem; box-shadow: 0 8px 20px rgba(25, 135, 84, 0.3);">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </div>
+                
+                <h2 class="fw-bold text-success mb-3">Félicitations !</h2>
+                <p class="lead text-muted mb-4">
+                    Votre abonnement au plan <strong>{{ active_sub.plan.name }}</strong> a été activé avec succès.
+                </p>
+
+                <div class="bg-light p-4 rounded-3 text-start mb-5 shadow-sm">
+                    <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">Récapitulatif de l'abonnement</h5>
+                    <div class="row g-2">
+                        <div class="col-6 text-muted">Plan choisi :</div>
+                        <div class="col-6 text-end fw-bold text-dark">{{ active_sub.plan.name }}</div>
+                        
+                        <div class="col-6 text-muted">Statut :</div>
+                        <div class="col-6 text-end"><span class="badge bg-success">Actif</span></div>
+                        
+                        <div class="col-6 text-muted">Prix :</div>
+                        <div class="col-6 text-end fw-bold text-success">{{ active_sub.plan.price|floatformat:0 }} FCFA</div>
+                        
+                        <div class="col-6 text-muted">Date de début :</div>
+                        <div class="col-6 text-end text-dark">{{ active_sub.start_date|date:"d/m/Y H:i" }}</div>
+                        
+                        <div class="col-6 text-muted">Date d'expiration :</div>
+                        <div class="col-6 text-end text-dark">{{ active_sub.end_date|date:"d/m/Y H:i" }}</div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <a href="{% url 'dashboard' %}" class="btn btn-senegal-primary btn-lg py-3 fw-bold" style="border-radius: 12px;">
+                        <i class="fas fa-tachometer-alt me-2"></i>Accéder à mon tableau de bord
+                    </a>
+                    {% if active_sub.plan.max_shops > 0 %}
+                        <a href="{% url 'create_shop' %}" class="btn btn-outline-success btn-lg py-3 fw-bold" style="border-radius: 12px;">
+                            <i class="fas fa-plus-circle me-2"></i>Créer une boutique maintenant
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'home' %}" class="text-muted">Retour à l'accueil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

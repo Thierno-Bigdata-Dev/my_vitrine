@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Mes Boutiques</h2>
+
+    {% if shops %}
+    <div class="row">
+        {% for shop in shops %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                {% if shop.logo %}
+                    <img src="{{ shop.logo.url }}" class="card-img-top" alt="{{ shop.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ shop.name }}</h5>
+                    <p class="card-text">{{ shop.description|truncatewords:20 }}</p>
+                    <p><strong>Adresse :</strong> {{ shop.address }}</p>
+                    <a href="{{ shop.get_absolute_url }}" class="btn btn-sm btn-success">Voir la boutique</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Vous n'avez créé aucune boutique pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

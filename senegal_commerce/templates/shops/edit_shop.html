@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Modifier la boutique</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {% if field.help_text %}
+                            <div class="form-text text-muted">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                        {% if shop.logo %}
+                        <div class="mb-3">
+                            <label class="form-label">Logo actuel :</label><br>
+                            <img src="{{ shop.logo.url }}" alt="Logo" class="img-thumbnail" style="max-height: 100px;">
+                        </div>
+                        {% endif %}
+
+                        {% if shop.banner %}
+                        <div class="mb-3">
+                            <label class="form-label">Bannière actuelle :</label><br>
+                            <img src="{{ shop.banner.url }}" alt="Bannière" class="img-fluid rounded" style="max-height: 200px;">
+                        </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-success w-100 mt-3">
+                            <i class="bi bi-save"></i> Enregistrer les modifications
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

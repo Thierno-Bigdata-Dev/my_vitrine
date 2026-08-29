@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Mes Produits</h2>
+
+    {% if products %}
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                    <p><strong>Prix :</strong> {{ product.price }} FCFA</p>
+                    <p><strong>Stock :</strong> {{ product.stock_quantity }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-sm btn-primary">Voir</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Vous n'avez ajouté aucun produit pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

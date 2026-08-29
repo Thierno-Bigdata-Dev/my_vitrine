@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>Validation de la commande</h2>
+    <p>Voici le résumé de votre panier :</p>
+
+    <ul class="list-group mb-4">
+        {% for item in cart.items.all %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ item.product.name }} (x{{ item.quantity }})
+            <span>{{ item.total_price }} FCFA</span>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h4>Total : {{ cart.total_price }} FCFA</h4>
+
+    <!-- ✅ Formulaire de livraison -->
+    <hr>
+    <h5>Informations de livraison</h5>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <!-- ✅ Méthode de paiement -->
+        <h5 class="mt-4">Méthode de paiement</h5>
+        <div class="mb-3">
+            <select name="payment_method" class="form-select">
+                <option value="orange_money">Orange Money</option>
+                <option value="wave">Wave</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" name="transaction_id" class="form-control" placeholder="ID de transaction">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Confirmer la commande</button>
+    </form>
+</div>
+{% endblock %}

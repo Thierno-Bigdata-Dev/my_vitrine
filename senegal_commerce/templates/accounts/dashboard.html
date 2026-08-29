@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Tableau de bord</h3>
+        </div>
+        <div class="card-body">
+            <p>Bienvenue, {{ user.username }} !</p>
+            <p>Voici votre espace personnel pour gérer vos informations, produits, et paramètres.</p>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card border-info">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">👤 Profil</h5>
+                            <p class="card-text">Modifier vos informations personnelles.</p>
+                            <a href="{% url 'profile' %}" class="btn btn-outline-info">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-success">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">🛍️ Produits</h5>
+                            <p class="card-text">Gérer vos produits en boutique.</p>
+                            <a href="{% url 'product_list' %}" class="btn btn-outline-success">Mes produits</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">⚙️ Paramètres</h5>
+                            <p class="card-text">Configurer votre compte et vos préférences.</p>
+                            <a href="{% url 'accounts' %}" class="btn btn-outline-warning">Paramètres</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

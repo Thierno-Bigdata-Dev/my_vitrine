@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-center"><i class="fas fa-box-open me-2"></i>Ajouter un produit</h2>
+     {% if errors %}
+      <div class="alert alert-danger" role="alert">
+        <strong>{{ errors.global_message }}</strong>
+        <ul class="mt-2">
+          {% for field in product_form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }} :</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data" class="p-4 shadow rounded bg-light">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Nom du produit</label>
+            <input type="text" name="name" id="name" class="form-control" placeholder="Ex: Ordinateur portable HP" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" id="description" rows="4" class="form-control" placeholder="Décrivez le produit..." required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Prix (FCFA)</label>
+            <input type="number" name="price" id="price" class="form-control" placeholder="Ex: 250000" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image du produit</label>
+            <input type="file" name="image" id="image" class="form-control" required>
+        </div>
+        <div class="mb-3">
+    <label for="stock_quantity" class="form-label">Quantité en stock</label>
+    <input type="number" name="stock_quantity" id="stock_quantity" class="form-control" placeholder="Ex: 10" required>
+</div>
+
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i>Ajouter le produit
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Plans Tarifaires - Sénégal Commerce{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3" style="background: linear-gradient(135deg, var(--senegal-green) 0%, var(--senegal-red) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+            Boostez votre activité sur Sénégal Commerce
+        </h1>
+        <p class="lead text-muted max-w-2xl mx-auto">
+            Choisissez la formule qui correspond le mieux à vos besoins de vente et commencez à vendre en ligne dès aujourd'hui.
+        </p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+        {% for plan in plans %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-lg position-relative {% if active_sub.plan == plan %}border border-3 border-success{% endif %}" 
+                     style="border-radius: 20px; transition: all 0.3s ease; overflow: hidden; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
+                    
+                    {% if active_sub.plan == plan %}
+                        <div class="position-absolute top-0 end-0 bg-success text-white px-3 py-1 fw-bold" style="border-bottom-left-radius: 15px; font-size: 0.85rem;">
+                            Plan Actuel
+                        </div>
+                    {% endif %}
+
+                    {% if plan.has_badge %}
+                        <div class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 fw-bold" style="border-bottom-right-radius: 15px; font-size: 0.85rem;">
+                            <i class="fas fa-crown me-1"></i>Recommandé
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="text-center mb-4 mt-2">
+                            <h3 class="card-title fw-bold text-uppercase tracking-wider mb-2 text-dark">{{ plan.name }}</h3>
+                            <div class="d-flex justify-content-center align-items-baseline my-3">
+                                <span class="display-5 fw-bold text-dark">{{ plan.price|floatformat:0 }}</span>
+                                <span class="text-muted ms-1">FCFA / mois</span>
+                            </div>
+                            <p class="text-muted small px-3">{{ plan.description }}</p>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <ul class="list-unstyled mb-5 flex-grow-1">
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="fas fa-check-circle text-success me-3" style="font-size: 1.2rem;"></i>
+                                <span><strong>{{ plan.max_shops }}</strong> Boutique{{ plan.max_shops|pluralize }}</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="fas fa-check-circle text-success me-3" style="font-size: 1.2rem;"></i>
+                                <span><strong>{{ plan.max_products_per_shop }}</strong> Produit{{ plan.max_products_per_shop|pluralize }} max / boutique</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                {% if plan.has_analytics %}
+                                    <i class="fas fa-check-circle text-success me-3" style="font-size: 1.2rem;"></i>
+                                    <span>Statistiques et rapports de ventes</span>
+                                {% else %}
+                                    <i class="fas fa-times-circle text-danger me-3" style="font-size: 1.2rem;"></i>
+                                    <span class="text-muted">Statistiques et rapports</span>
+                                {% endif %}
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                {% if plan.has_badge %}
+                                    <i class="fas fa-check-circle text-success me-3" style="font-size: 1.2rem;"></i>
+                                    <span>Badge de confiance <strong>"Vendeur Pro"</strong></span>
+                                {% else %}
+                                    <i class="fas fa-times-circle text-danger me-3" style="font-size: 1.2rem;"></i>
+                                    <span class="text-muted">Badge de confiance Pro</span>
+                                {% endif %}
+                            </li>
+                            <li class="mb-3 d-flex align-items-center">
+                                <i class="fas fa-check-circle text-success me-3" style="font-size: 1.2rem;"></i>
+                                <span>Support client prioritaire</span>
+                            </li>
+                        </ul>
+
+                        <div class="d-grid mt-auto">
+                            {% if active_sub.plan == plan %}
+                                <button class="btn btn-outline-success btn-lg disabled" style="border-radius: 12px; font-weight: bold;">
+                                    <i class="fas fa-check-double me-2"></i>Votre formule active
+                                </button>
+                            {% else %}
+                                <a href="{% url 'subscribe' plan.id %}" class="btn {% if plan.has_badge %}btn-warning text-dark{% else %}btn-senegal-primary{% endif %} btn-lg hover-lift" 
+                                   style="border-radius: 12px; font-weight: bold; transition: all 0.3s ease;">
+                                    {% if plan.price == 0 %}Activer Gratuitement{% else %}S'abonner maintenant{% endif %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Comparatif détaillé -->
+    <div class="mt-5 pt-5">
+        <h2 class="text-center fw-bold mb-4">Tableau Comparatif Détaillé</h2>
+        <div class="table-responsive shadow-sm" style="border-radius: 15px; overflow: hidden;">
+            <table class="table table-striped table-hover bg-white text-center align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-start py-3 ps-4">Fonctionnalités</th>
+                        <th class="py-3">Gratuit</th>
+                        <th class="py-3">Standard</th>
+                        <th class="py-3">Professionnel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-start ps-4 fw-bold">Prix mensuel</td>
+                        <td>0 FCFA</td>
+                        <td>5 000 FCFA</td>
+                        <td>15 000 FCFA</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start ps-4">Nombre de boutiques</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>Illimité</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start ps-4">Produits par boutique</td>
+                        <td>5</td>
+                        <td>20</td>
+                        <td>Illimité</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start ps-4">Statistiques de vente</td>
+                        <td><i class="fas fa-times text-danger"></i> Non</td>
+                        <td><i class="fas fa-check text-warning"></i> Basiques</td>
+                        <td><i class="fas fa-check text-success"></i> Avancées</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start ps-4">Badge Vendeur Pro</td>
+                        <td><i class="fas fa-times text-danger"></i> Non</td>
+                        <td><i class="fas fa-times text-danger"></i> Non</td>
+                        <td><i class="fas fa-check text-success"></i> Oui (Étoile Pro)</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start ps-4">Assistance</td>
+                        <td>Par email (48h)</td>
+                        <td>Prioritaire (24h)</td>
+                        <td>Support dédié 24/7</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-lift:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+</style>
+{% endblock %}

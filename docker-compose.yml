@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: senegal_db_container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=senegal_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=motdepasse
+    ports:
+      - "5433:5432"
+
+  web:
+    build: .
+    container_name: senegal_web_container
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./senegal_commerce:/app
+    ports:
+      - "8002:8000"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-docker-secret-key
+      - DB_NAME=senegal_db
+      - DB_USER=postgres
+      - DB_PASSWORD=motdepasse
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

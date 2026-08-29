@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Tableau de bord Vendeur - Sénégal Commerce{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="fw-bold mb-4">
+                <i class="fas fa-store me-3"></i>Tableau de bord Vendeur
+            </h1>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stats-card text-center">
+                <div class="stats-number">{{ shops.count }}</div>
+                <div class="stats-label">Boutiques</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card text-center">
+                <div class="stats-number">{{ total_products }}</div>
+                <div class="stats-label">Produits</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card text-center">
+                <div class="stats-number">0</div>
+                <div class="stats-label">Commandes</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card text-center">
+                <div class="stats-number">0</div>
+                <div class="stats-label">FCFA</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Subscription Card -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-senegal border-start border-warning border-4" style="border-radius: 15px;">
+                <div class="card-body py-3 px-4 d-flex flex-wrap justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-light text-warning rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-gem fa-lg"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1 text-dark">Formule Actuelle : <strong class="text-success">{{ active_sub.plan.name }}</strong></h5>
+                            <p class="text-muted small mb-0">
+                                {% if active_sub.plan.price == 0 %}
+                                    Formule gratuite. Limite : {{ active_sub.plan.max_shops }} boutique, {{ active_sub.plan.max_products_per_shop }} produits/boutique.
+                                {% else %}
+                                    Abonnement actif jusqu'au {{ active_sub.end_date|date:"d F Y" }}. Limite : {{ active_sub.plan.max_shops }} boutiques, {{ active_sub.plan.max_products_per_shop }} produits/boutique.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{% url 'plan_list' %}" class="btn btn-outline-warning text-dark fw-bold btn-sm" style="border-radius: 8px;">
+                            <i class="fas fa-sync-alt me-1"></i>Gérer mon abonnement
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-senegal">
+                <div class="card-header card-header-senegal">
+                    <h5 class="mb-0">Actions Rapides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'create_shop' %}" class="btn btn-senegal-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Créer une Boutique
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'my_shops' %}" class="btn btn-senegal-secondary w-100">
+                                <i class="fas fa-store me-2"></i>Mes Boutiques
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'my_products' %}" class="btn btn-senegal-primary w-100">
+                                <i class="fas fa-box me-2"></i>Mes Produits
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="{% url 'profile' %}" class="btn btn-senegal-secondary w-100">
+                                <i class="fas fa-user me-2"></i>Mon Profil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Shops -->
+    {% if shops %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-senegal">
+                <div class="card-header card-header-senegal">
+                    <h5 class="mb-0">Mes Boutiques</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for shop in shops %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card shop-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        {% if shop.logo %}
+                                            <img src="{{ shop.logo.url }}" class="shop-logo me-3" alt="{{ shop.name }}">
+                                        {% else %}
+                                            <div class="shop-logo me-3 bg-light d-flex align-items-center justify-content-center">
+                                                <i class="fas fa-store text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-1">{{ shop.name }}</h6>
+                                            <p class="text-muted small mb-1">{{ shop.city }}</p>
+                                            <span class="badge bg-success">Actif</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="{% url 'shop_detail' shop.pk %}" class="btn btn-sm btn-senegal-primary me-2">
+                                            <i class="fas fa-eye me-1"></i>Voir
+                                        </a>
+                                        <a href="{% url 'edit_shop' shop.pk %}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-edit me-1"></i>Modifier
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-senegal text-center">
+                <h4><i class="fas fa-store me-2"></i>Créez votre première boutique</h4>
+                <p>Vous n'avez pas encore de boutique. Créez-en une maintenant pour commencer à vendre vos produits.</p>
+                <a href="{% url 'create_shop' %}" class="btn btn-senegal-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Créer ma première boutique
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
