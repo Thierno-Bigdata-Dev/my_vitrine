@@ -29,6 +29,12 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+# Allow form submissions from ngrok tunnels
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.dev',
+    'https://*.ngrok-free.app',
+    'https://*.ngrok.io',
+]
 
 # Application definition
 
