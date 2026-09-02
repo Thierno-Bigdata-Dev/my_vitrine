@@ -21,14 +21,20 @@
                     </span>
                 {% endif %}
             </h2>
-            <p>
-                <strong>Boutique :</strong> {{ product.shop.name }}
+            <p class="mb-1">
+                <strong>Boutique :</strong> 
+                <a href="{{ product.shop.get_absolute_url }}" class="text-decoration-none fw-bold">{{ product.shop.name }}</a>
                 {% if product.shop.has_pro_badge %}
                     <span class="badge bg-warning text-dark ms-1" style="font-size: 0.75rem;" title="Vendeur Professionnel">
                         <i class="fas fa-crown me-1"></i>Pro
                     </span>
                 {% endif %}
             </p>
+            <div class="mb-3 ps-3 border-start border-2 border-primary text-muted small">
+                {% if product.shop.city %}<i class="fas fa-map-marker-alt me-1"></i>{{ product.shop.city }}<br>{% endif %}
+                {% if product.shop.address %}<i class="fas fa-location-arrow me-1"></i>{{ product.shop.address }}<br>{% endif %}
+                {% if product.shop.phone %}<i class="fas fa-phone me-1"></i>{{ product.shop.phone }}{% endif %}
+            </div>
             <p><strong>Catégorie :</strong> {{ product.category.name }}</p>
             <p><strong>Description :</strong> {{ product.description }}</p>
             <p><strong>Prix :</strong> {{ product.price }} FCFA</p>

@@ -15,7 +15,6 @@ from .forms import ProductForm
 from . import services
 
 
-@login_required
 def product_list(request):
     """Liste de tous les produits actifs avec filtrage et pagination."""
     query = request.GET.get('q')
@@ -43,7 +42,6 @@ def product_list(request):
     return render(request, 'products/product_list.html', context)
 
 
-@login_required
 def product_detail(request, pk):
     """Détail d'un produit avec produits similaires."""
     product = get_object_or_404(Product, pk=pk, is_active=True, shop__is_active=True)

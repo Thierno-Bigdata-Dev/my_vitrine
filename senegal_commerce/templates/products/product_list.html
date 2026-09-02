@@ -4,39 +4,70 @@
 <div class="container">
     <h1 class="my-4">Nos Produits</h1>
     <div class="row">
-        {% for product in products %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if product.image %}
-
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title d-flex align-items-center justify-content-between">
-                        {{ product.name }}
-                        {% if product.has_pro_badge %}
-                            <span class="badge bg-warning text-dark ms-2" style="font-size: 0.75rem;" title="Vendeur Professionnel">
-                                <i class="fas fa-crown me-1"></i>Pro
-                            </span>
-                        {% endif %}
-                    </h5>
-                    <p class="card-text">{{ product.description|truncatewords:20 }}</p>
-                    <p class="card-text"><strong>Prix :</strong> {{ product.price }} FCFA</p>
-                    <p class="card-text">
-                        <strong>Stock :</strong> 
-                        {% if product.is_in_stock %}
-                            <span class="text-success">Disponible ({{ product.stock_quantity }})</span>
-                        {% else %}
-                            <span class="text-danger">Rupture</span>
-                        {% endif %}
-                    </p>
-                    <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Voir le produit</a>
+        <!-- Barre latérale : Filtres par catégorie -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-list me-2"></i>Catégories</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'product_list' %}" class="list-group-item list-group-item-action {% if not selected_category %}active fw-bold{% endif %}">
+                        Toutes les catégories
+                    </a>
+                    {% for category in categories %}
+                    <a href="{% url 'product_list' %}?category={{ category.id }}" class="list-group-item list-group-item-action {% if selected_category == category.id|stringformat:'s' %}active fw-bold{% endif %}">
+                        {{ category.name }}
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-        {% empty %}
-        <p>Aucun produit disponible pour le moment.</p>
-        {% endfor %}
+
+        <!-- Contenu principal : Grille de produits -->
+        <div class="col-md-9">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0 transition-hover">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="object-fit: cover; height: 200px;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title d-flex align-items-center justify-content-between">
+                                {{ product.name }}
+                                {% if product.has_pro_badge %}
+                                    <span class="badge bg-warning text-dark ms-2" style="font-size: 0.75rem;" title="Vendeur Professionnel">
+                                        <i class="fas fa-crown me-1"></i>Pro
+                                    </span>
+                                {% endif %}
+                            </h5>
+                            <p class="card-text text-muted small">{{ product.description|truncatewords:15 }}</p>
+                            <p class="card-text fw-bold text-primary fs-5">{{ product.price }} FCFA</p>
+                            <p class="card-text small">
+                                {% if product.is_in_stock %}
+                                    <span class="text-success"><i class="fas fa-check-circle me-1"></i>En stock ({{ product.stock_quantity }})</span>
+                                {% else %}
+                                    <span class="text-danger"><i class="fas fa-times-circle me-1"></i>Rupture</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white border-0 pb-3">
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-outline-primary w-100">Voir le détail</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info d-flex align-items-center" role="alert">
+                        <i class="fas fa-info-circle me-2 fs-4"></i>
+                        <div>
+                            Aucun produit n'est disponible dans cette catégorie pour le moment.
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
